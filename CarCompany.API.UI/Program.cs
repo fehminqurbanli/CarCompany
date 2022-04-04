@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,11 @@ namespace CarCompany.API.UI
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+        }
+
+        public static void ConfigureLogger()
+        {
+            Log.Logger=new LoggerConfiguration
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

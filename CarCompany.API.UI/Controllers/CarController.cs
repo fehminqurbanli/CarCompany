@@ -1,4 +1,5 @@
-﻿using CarCompany.DataAccess.Models;
+﻿using CarCompany.Business.Abstract;
+using CarCompany.DataAccess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,23 +15,17 @@ namespace CarCompany.API.UI.Controllers
     [ApiController]
     public class CarController : ControllerBase
     {
-        //protected readonly ILogger<CarController> _logger;
+        private readonly ICarService _carService;
 
-        //public CarController(ILogger<CarController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        public string filename = @"carDb.txt";
-
+        public CarController(ICarService carService)
+        {
+            _carService = carService;
+        }
 
         [HttpPost]
         public IActionResult AddCar(Car car)
         {
-            StreamWriter sw = new StreamWriter(filename, true);
-            sw.WriteLine(car.Id + "-" + car.Brand + "-" + car.Model + "-" + car.Color + "-" + car.Year);
-            sw.Close();
-
+            _carService.Add(car);
             return Ok();
         }
 
@@ -38,72 +33,33 @@ namespace CarCompany.API.UI.Controllers
         public IActionResult GetCars()
         {
 
-            List<string> list = new List<string>();
-
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    list.Add(line);
-                }
-            }
-            return Ok(list);
+            var result=_carService.GetAll();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetCarById(int id)
         {
-            string car = null;
-
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (id.ToString() == line.Split('-').First())
-                    {
-                        car = line;
-                        break;
-                    }
-                }
-            }
-            return Ok(car);
+            var result = _carService.GetById(id);
+            return Ok(result);
         }
 
-       
+        [HttpPut]
+        public IActionResult Update(int id, Car car)
+        {
+            var updatedCar = _carService.GetById(id);
+            
+            _carService.Update(car);
+            return Ok();
+        }
 
-        //[HttpDelete("{id}")]
-        //public IActionResult DeleteById(int id)
-        //{
-
-        //    string car = null;
-        //    string allText=null;
-        //    using (StreamReader reader = new StreamReader(filename))
-        //    {
-        //        string line;
-        //        while ((line = reader.ReadLine()) != null)
-        //        {
-        //            if (id.ToString() == line.Split('-').First())
-        //            {
-        //                car = line;
-        //                break;
-        //            }
-        //        }
-        //        allText = reader.ReadToEnd();
-        //        allText = allText.Replace(car, string.Empty);
-                
-        //    }
-
-        //    using (StreamWriter writer=new StreamWriter(filename))
-        //    {
-        //        writer.WriteLine(allText);
-        //    }
-
-
-           
-        //    return Ok();
-        //}
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            var deletedCar = _carService.GetById(id);
+            _carService.Delete(deletedCar);
+            return Ok();
+        }
 
 
     }

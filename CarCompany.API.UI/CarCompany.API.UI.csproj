@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CarCompany.Business\CarCompany.Business.csproj" />
     <ProjectReference Include="..\CarCompany.DataAccess\CarCompany.DataAccess.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,12 @@
+using CarCompany.Business.Abstract;
+using CarCompany.Business.Concrete;
+using CarCompany.DataAccess.Abstract;
+using CarCompany.DataAccess.Concrete;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,10 +33,14 @@ namespace CarCompany.API.UI
         {
 
             services.AddControllers();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarCompany.API.UI", Version = "v1" });
             });
+            services.AddScoped<ICarService, CarManager>();
+            services.AddScoped<ICarDal, CarDal>();
+            services.AddScoped<ICarService, CarManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

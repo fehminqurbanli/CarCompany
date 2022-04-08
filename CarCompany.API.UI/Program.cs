@@ -17,11 +17,7 @@ namespace CarCompany.API.UI
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static void ConfigureLogger()
-        {
-            Log.Logger=new LoggerConfiguration
-        }
-
+        
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

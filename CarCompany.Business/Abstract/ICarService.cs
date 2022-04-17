@@ -9,11 +9,11 @@ namespace CarCompany.Business.Abstract
 {
     public interface ICarService
     {
-        List<Car> GetAll();
-        Car GetById(int id);
-        void Add(Car car);
-        void Update(Car car);
-        void Delete(Car car);
+        Task< IEnumerable<Car>> GetAll();
+        Task< Car> GetById(int id);
+        Task Add(Car car);
+        Task Update(Car car);
+        Task Delete(Car car);
 
     }
 }

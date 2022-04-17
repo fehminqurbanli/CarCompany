@@ -18,29 +18,29 @@ namespace CarCompany.Business.Concrete
             _cardal = cardal;
         }
 
-        public void Add(Car car)
+        public async Task Add(Car car)
         {
-            _cardal.Add(car);
+            await _cardal.Add(car);
         }
 
-        public void Delete(Car car)
+        public async Task Delete(Car car)
         {
-            _cardal.Delete(car);
+            await _cardal.Delete(car);
         }
 
-        public List<Car> GetAll()
+        public async Task<IEnumerable<Car>> GetAll()
         {
-            return _cardal.GetAll();
+            return await _cardal.GetAll();
         }
 
-        public Car GetById(int id)
+        public async Task<Car> GetById(int id)
         {
-            return _cardal.Get(c => c.Id == id);
+            return await _cardal.Get(c => c.Id == id);
         }
 
-        public void Update(Car car)
+        public async Task Update(Car car)
         {
-            _cardal.Update(car);
+            await _cardal.Update(car);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CarCompany.Business.Abstract;
+﻿using CarCompany.API.UI.NLog;
+using CarCompany.Business.Abstract;
 using CarCompany.DataAccess.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,48 +17,48 @@ namespace CarCompany.API.UI.Controllers
     public class CarController : ControllerBase
     {
         private readonly ICarService _carService;
-
-        public CarController(ICarService carService)
+        private readonly ILoggerService _logger;
+        public CarController(ICarService carService, ILoggerService logger)
         {
             _carService = carService;
+            _logger = logger;
         }
 
         [HttpPost]
-        public IActionResult AddCar(Car car)
+        public async Task<IActionResult> AddCar(Car car)
         {
-            _carService.Add(car);
+            await _carService.Add(car);
             return Ok();
         }
 
         [HttpGet("GetCars")]
-        public IActionResult GetCars()
+        public async Task<IActionResult> GetCars()
         {
-
-            var result=_carService.GetAll();
+            _logger.LogInfo("Accessed Car controller");
+            var result= await _carService.GetAll();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCarById(int id)
+        public async Task<IActionResult> GetCarById(int id)
         {
-            var result = _carService.GetById(id);
+            var result =await _carService.GetById(id);
             return Ok(result);
         }
 
         [HttpPut]
-        public IActionResult Update(int id, Car car)
+        public async Task<IActionResult> Update(Car car)
         {
-            var updatedCar = _carService.GetById(id);
             
-            _carService.Update(car);
+            await _carService.Update(car);
             return Ok();
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var deletedCar = _carService.GetById(id);
-            _carService.Delete(deletedCar);
+            var deletedCar = await _carService.GetById(id);
+            await _carService.Delete(deletedCar);
             return Ok();
         }
 

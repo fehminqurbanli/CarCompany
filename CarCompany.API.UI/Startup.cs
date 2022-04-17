@@ -1,3 +1,4 @@
+using CarCompany.API.UI.NLog;
 using CarCompany.Business.Abstract;
 using CarCompany.Business.Concrete;
 using CarCompany.DataAccess.Abstract;
@@ -14,7 +15,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace CarCompany.API.UI
@@ -37,7 +40,13 @@ namespace CarCompany.API.UI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CarCompany.API.UI", Version = "v1" });
+
+                //var xfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                //var xpath = Path.Combine(AppContext.BaseDirectory, xfile);
+                //c.IncludeXmlComments(xpath);
             });
+
+            services.AddSingleton<ILoggerService, LoggerService>();
             services.AddScoped<ICarService, CarManager>();
             services.AddScoped<ICarDal, CarDal>();
             services.AddScoped<ICarService, CarManager>();
